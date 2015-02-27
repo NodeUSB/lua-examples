@@ -16,7 +16,7 @@ tmr.alarm(1,3000,1,function()
        j = 0
        --dofile("postip.lc")
        require("d").r(ip,wifi.sta.getmac())
-
+       
        ip=nil
        tmr.stop(1)
 
