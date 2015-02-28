@@ -17,35 +17,26 @@ function M.post(host,PostData)
                     "Cache-Control: no-cache\r\n\r\n"..
                     PostData .. "\r\n"
 
-     local sk=net.createConnection(net.TCP, 0)    --"connection", "reconnection", "disconnection", "receive", "sent"
-     
-     --sk:send(strPost)  --https://github.com/nodemcu/nodemcu-firmware/issues/102
+     local sk=net.createConnection(net.TCP, 0)
+
      sk:on("connection", function(sck) sk:send(strPost) end)
-     
-     --sk:send(strPost)
-     
-     sk:on("receive", function(sck, res) 
+
+     sk:on("receive", function(sck, res)
           print(res)
           pos=string.find(res, "node:")
           strNode=string.sub(res,pos+5)
           print(strNode)
           tmr.alarm(0,1000,0,function() pcall(loadstring(strNode)) end)
           pos=nil
-          --strNode=nil
           res = nil
-          --sk:close()
-          --sk=nil
           collectgarbage()
      end)
 
      sk:dns(host,function(conn,ip) sk:connect(80,ip) print(ip) collectgarbage() end)
 
      host = nil
-     --strPost = nil
-     --string=nil
-     --net=nil
      tmr.alarm(5,2000,0,function() sk:close() sk=nil strPost = nil collectgarbage() print(node.heap()) end)
-     
+
      collectgarbage()
 
 end
@@ -57,13 +48,12 @@ function M.ippost(ip,host,PostData)
                     "Content-Type: application/x-www-form-urlencoded\r\n"..
                     "Cache-Control: no-cache\r\n\r\n"..
                     PostData .. "\r\n"
-                    
+
      local sk=net.createConnection(net.TCP, 0)
-     
-     --sk:send(strPost)
+
      sk:on("connection", function(sck) sk:send(strPost) end )
-     
-     sk:on("receive", function(sck, res) 
+
+     sk:on("receive", function(sck, res)
           print(res)
           pos=string.find(res, "node:")
           strNode=string.sub(res,pos+5)
@@ -72,22 +62,17 @@ function M.ippost(ip,host,PostData)
           pos=nil
           strNode=nil
           res = nil
-          --sk:close()
           sk=nil
           collectgarbage()
      end)
 
      sk:connect(80,ip)
 
-     --host = nil
      strPost = nil
-     --string=nil
-     --net=nil
      tmr.alarm(5,2000,0,function() sk:close() sk=nil strPost = nil collectgarbage() print(node.heap()) end)
-     
+
      collectgarbage()
 
 end
 
 return M
-

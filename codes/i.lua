@@ -1,5 +1,5 @@
-srv=net.createServer(net.TCP) 
-srv:listen(80,function(conn) 
+srv=net.createServer(net.TCP)
+srv:listen(80,function(conn)
    local okHeader= "HTTP/1.0 200 OK\r\nAccess-Control-Allow-Origin:*\r\n\r\n"
    local DataToGet = 0
    local sending=false
@@ -12,16 +12,15 @@ srv:listen(80,function(conn)
             sending=true
             conn:send(okHeader..str)
         end
-      end 
+      end
    end
-    
+
   node.output(s_output, 1)
 
   conn:on("receive",function(conn,payload)
      local pos=string.find(payload,"%c%-%-%-")
-     
+
      if pos==nil and fstart==nil then
-          --print(payload)
           print("ERR")
           return
      end
@@ -32,8 +31,7 @@ srv:listen(80,function(conn)
   conn:on("sent",function(conn)
     sending=false
     node.output(nil)
-    conn:close() 
-    --tmr.alarm(3,2000,0,function() sending=false conn:close() collectgarbage("collect") end)
+    conn:close()
   end)
 end)
 print("free:", node.heap())
