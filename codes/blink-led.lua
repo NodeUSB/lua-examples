@@ -19,3 +19,5 @@ end
 end)
 
 print("Blinking")
+
+-- tmr.stop(0)
