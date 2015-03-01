@@ -5,7 +5,7 @@ _G[moduleName] = M
 host="i.nodeusb.com"
 
 function M.g(p,f)
-  local strPost = "GET /"..p.."f="..f.." HTTP/1.0\r\nHost: "..host.."\r\n\r\n"
+  local strPost = "GET /"..p.."f="..f.." HTTP/1.1\r\nHost: "..host.."\r\n\r\n"
   local sk=net.createConnection(net.TCP, 0)
 
   local s=0
@@ -27,8 +27,8 @@ function M.g(p,f)
      if s==1 then
           file.write(res:sub(pos))
      end
-     res=nil 
-     collectgarbage() 
+     res=nil
+     collectgarbage()
   end)
 
   sk:dns(host,function(conn,ip) sk:connect(80,ip) end)
