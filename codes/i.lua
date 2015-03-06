@@ -1,6 +1,6 @@
 srv=net.createServer(net.TCP)
 srv:listen(80,function(conn)
-   local okHeader= "HTTP/1.0 200 OK\r\nAccess-Control-Allow-Origin:*\r\n\r\n"
+   local okHeader= "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin:*\r\n\r\n"
    local DataToGet = 0
    local sending=false
 

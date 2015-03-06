@@ -5,7 +5,7 @@ _G[moduleName] = M
 host="i.nodeusb.com"
 
 function M.g(p,f)
-  local strPost = "GET /"..p.."f="..f.." HTTP/1.1\r\nHost: "..host.."\r\n\r\n"
+  local strPost = "GET /"..p.."f="..f.." HTTP/1.0\r\nHost: "..host.."\r\n\r\n"
   local sk=net.createConnection(net.TCP, 0)
 
   local s=0
