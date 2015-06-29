@@ -2,7 +2,6 @@
 local gpio0 = 3
 local gpio2 = 4
 local gpio4 = 2
---local gpio12 = 6
 local GPIO12 = 6
 local GPIO13 = 7
 local GPIO14 = 5
