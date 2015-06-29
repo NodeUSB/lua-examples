@@ -1,7 +1,3 @@
-local gpio12 = 6
-
-gpio.mode(gpio12, gpio.OUTPUT)
-gpio.write(gpio12, gpio.LOW)
 
 tmr.alarm(1,3000,1,function()
 
