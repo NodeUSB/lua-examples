@@ -2,13 +2,18 @@
 
 local pKey="xxxxxxxx"
 local host="nusensor.appspot.com"
+-- Use bmp180 with NodeUSB, connect to USB connector with GND, goio13, gpio12, gpio14
 local gpio0 = 3
 local gpio2 = 4
-local gpio12 = 6
+local gpio4 = 2
+--local gpio12 = 6
+local GPIO12 = 6
+local GPIO13 = 7
+local GPIO14 = 5
 
---Power on bmp018,bmp085 by set gpio12 to high
-gpio.mode(gpio12, gpio.OUTPUT)
-gpio.write(gpio12, gpio.HIGH)
+--Use GPIO13 to provide power for bmp180, si7021
+gpio.mode(GPIO13, gpio.OUTPUT)
+gpio.write(GPIO13, gpio.HIGH)
 
 --i = 0
 j = 0
@@ -19,11 +24,6 @@ tmr.alarm(1,5000,1,function()
      ip = wifi.sta.getip()
      if(ip==nil) then
           print("WiFi down")
-          --if(j>=6) and (i>10) then
-               --print("rebooting")
-               -- relay on then off
-               --node.restart()
-          --end
           j = j + 1
      else
           j = 0
@@ -32,16 +32,16 @@ tmr.alarm(1,5000,1,function()
           print(m)
 
           local bmp=require("bmp085")
-          bmp.init(gpio0,gpio2)
+          bmp.init(GPIO14,GPIO12)
 
-         if pcall(function () tb=bmp.getUT() ap=bmp.getUP() end) then
-              sT=string.format([[%s]],tb):sub(0,5)
-              sAP=string.format([[%s]],ap):sub(0,5)
-              print(sT.."\n"..sAP.."\n")
-         else
-              print("Error reading from BMP085")
-              return
-         end
+          if pcall(function () tb=bmp.getUT() ap=bmp.getUP() end) then
+            sT=string.format([[%s]],tb):sub(0,5)
+            sAP=string.format([[%s]],ap):sub(0,5)
+            print(sT.."\n"..sAP.."\n")
+          else
+            print("Error reading from BMP085")
+            return
+          end
 
           -- release module
           bmp = nil
@@ -50,8 +50,6 @@ tmr.alarm(1,5000,1,function()
 
           collectgarbage()
 
-          --PostData = string.format([[k=%s&t=%s&a=%s&ip=%s]],pKey,temp,ap,wifi.sta.getip())
-          --local myip = wifi.sta.getip()
           local mac = wifi.sta.getmac()
           local wifi = nil
 
